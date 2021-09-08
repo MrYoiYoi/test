@@ -96,11 +96,11 @@
       <input type="button" id = "id_input "class="id_input" value="중복검사">
     </div>
     <div class="form-group">
-      <label for="userpwd">Password:</label>
+      <label for="userpwd">비밀번호:</label>
       <input type="password" class="form-control" id="userpwd" name="userpwd" placeholder="Enter password">
     </div>
     <div class="form-group">
-      <label for="username">Name:</label>
+      <label for="username">이름:</label>
       <input type="text" class="form-control" id="username" name="username" placeholder="Enter your name">
     </div>
     <button id="joinBtn" type="submit" class="btn btn-primary" >가입</button>
