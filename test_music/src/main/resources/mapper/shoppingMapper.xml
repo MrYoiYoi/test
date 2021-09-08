@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 상품 목록 -->
+<mapper namespace="global.sesoc.music.dao.ShoppingMapper">
+<select id="selectAll" resultType="Music">
+	SELECT * FROM musiccd
+</select>
+
+<!-- 상세 보기 -->
+<select id="detailMusic" parameterType="int" resultType="Music">
+	SELECT * FROM musiccd
+	WHERE
+		cdnum = #{cdnum}
+</select>
+
+<!-- 구매내역 -->
+<insert id="orderlist" parameterType="Sales">
+	INSERT INTO musicsales
+		(userid, cdnum, quantity,amount)
+	VALUES
+		(#{userid}, #{cdnum},#{quantity},
+		(#{quantity}*(select price from musiccd where cdnum=#{cdnum})))
+		
+</insert>
+
+<!-- 구매내역 리스트 -->
+<select id="orderitemList" resultType="Sales" parameterType="string">
+SELECT 
+	to_char(s.saledate, 'yyyy/MM/dd hh:mm') as saledate,
+	c.title,
+	s.quantity,
+	s.amount,
+	c.artist
+ FROM musiccd c, musicsales s
+WHERE userid = #{userid} and c.cdnum IN
+ 	(SELECT s.cdnum FROM musicsales WHERE userid = #{userid})
+ ORDER BY 
+      saledate
+</select>
+<!-- 판매 순위 -->
+<select id="salesRank" resultType="Sales">
+	SELECT 
+		C.ARTIST as artist, 
+		C.TITLE as title, 
+		SUM(S.QUANTITY) AS TOTALQUANTITY 
+	FROM 
+		MUSICCD C, MUSICSALES S 
+	WHERE 
+		C.CDNUM=S.CDNUM 
+	GROUP BY 
+		C.ARTIST,C.TITLE 
+	ORDER BY 
+		TOTALQUANTITY DESC
+</select>
+</mapper>

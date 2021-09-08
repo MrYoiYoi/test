@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 회원정보 처리 SQL -->
+<mapper namespace="global.sesoc.music.dao.UserMapper">
+<!--  회원가입 -->
+	<insert id="insert" parameterType="User">
+	INSERT INTO musicuser
+	( 
+		 userid
+		 , userpwd
+		 , username
+	 )
+	VALUES
+	(
+		#{userid}
+		, #{userpwd}
+		, #{username}
+	)
+	</insert>	
+	
+	<!-- 아이디체크, 로그인  -->
+	<select id="selectOne" resultType="User" parameterType="map">
+	SELECT 
+		*
+	FROM 
+		musicuser
+	WHERE 
+		userid = #{userid}
+	<if test="userpwd != null">
+		AND
+		userpwd = #{userpwd}
+	</if>
+	</select>
+	
+	<select id="idCheck" resultType="int">
+  	
+  		SELECT count(*) FROM musicuser WHERE userid = #{userid}
+  	
+  	</select>
+	
+</mapper>
